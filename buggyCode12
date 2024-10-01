@@ -1,0 +1,27 @@
+// 12. Buggy Code Exercise
+// Problem Statement: You’re building a chat system, but messages are not being logged
+// correctly due to improper event handling. The listeners are added multiple times,
+// leading to duplicate logging.
+//Buggy Code:
+
+const EventEmitter = require('events');
+const chatRoom = new EventEmitter();
+const users = new Set();
+
+function joinChat(user) {
+  if (!users.has(user)) {
+    users.add(user);
+    chatRoom.on('message', (message) => {
+      console.log(`${user} received: ${message}`);
+    });
+  }
+}
+joinChat('Alice');
+joinChat('Bob');
+chatRoom.emit('message', 'Hello, World!');
+
+
+// Problem: Messages are being logged multiple times. Both Alice and Bob
+// are receiving duplicate messages.
+
+
